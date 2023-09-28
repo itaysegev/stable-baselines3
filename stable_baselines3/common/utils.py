@@ -44,6 +44,7 @@ def set_random_seed(seed: int, using_cuda: bool = False) -> None:
         # Deterministic operations for CuDNN, it may impact performances
         th.backends.cudnn.deterministic = True
         th.backends.cudnn.benchmark = False
+    print("See: ", seed)
 
 
 # From stable baselines
