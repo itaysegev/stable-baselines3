@@ -172,7 +172,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
     def _setup_model(self) -> None:
         self._setup_lr_schedule()
         self.set_random_seed(self.seed)
-        print("self.policy_kwargs", self.policy_kwargs)
+
 
         if self.replay_buffer_class is None:
             if isinstance(self.observation_space, spaces.Dict):

@@ -565,7 +565,6 @@ class BaseAlgorithm(ABC):
             return
         set_random_seed(seed, using_cuda=self.device.type == th.device("cuda").type)
         self.action_space.seed(seed)
-        print(f"Seed for all environments: {seed}")
         # self.env is always a VecEnv
         if self.env is not None:
             self.env.seed(seed)
