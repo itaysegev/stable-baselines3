@@ -154,6 +154,7 @@ class SACD(OffPolicyAlgorithm):
         self.ent_coef_optimizer: Optional[th.optim.Adam] = None
 
         if _init_setup_model:
+            print("DEBUG: _init_setup_model")
             self._setup_model()
 
     def _setup_model(self) -> None:
