@@ -32,6 +32,7 @@ def set_random_seed(seed: int, using_cuda: bool = False) -> None:
     :param seed:
     :param using_cuda:
     """
+    print("Seed: ", seed)
     # Seed python RNG
     random.seed(seed)
     # Seed numpy RNG
