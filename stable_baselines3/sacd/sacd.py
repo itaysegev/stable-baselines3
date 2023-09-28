@@ -154,11 +154,11 @@ class SACD(OffPolicyAlgorithm):
         self.ent_coef_optimizer: Optional[th.optim.Adam] = None
 
         if _init_setup_model:
-            print("DEBUG: _init_setup_model")
             self._setup_model()
 
     def _setup_model(self) -> None:
         super()._setup_model()
+        print("SAC _setup_model")
         self._create_aliases()
         # Running mean and running var
         self.batch_norm_stats = get_parameters_by_name(self.critic, ["running_"])
