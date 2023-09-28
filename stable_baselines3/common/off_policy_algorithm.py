@@ -170,7 +170,9 @@ class OffPolicyAlgorithm(BaseAlgorithm):
             self.train_freq = TrainFreq(*train_freq)
 
     def _setup_model(self) -> None:
+        print("self.policy_kwarg", self.policy_kwargs)
         self._setup_lr_schedule()
+        print("self.policy_kwar", self.policy_kwargs)
         self.set_random_seed(self.seed)
         print("self.policy_kwargs", self.policy_kwargs)
 
