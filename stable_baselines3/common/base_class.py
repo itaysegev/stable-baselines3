@@ -563,7 +563,6 @@ class BaseAlgorithm(ABC):
         """
         if seed is None:
             return
-        print(f"Setting random seed to {seed}")
         set_random_seed(seed, using_cuda=self.device.type == th.device("cuda").type)
         self.action_space.seed(seed)
         print(f"Seed for all environments: {seed}")
