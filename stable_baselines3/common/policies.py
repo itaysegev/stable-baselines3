@@ -985,7 +985,7 @@ class MultiPerspectiveCritic(BaseModel):
         normalize_images: bool = True,
         n_critics: int = 2,
         share_features_extractor: bool = True,
-        n_reward_components: int = 3,
+        n_reward_components: int = 1,
     ):
         print("n_reward_components", n_reward_components)
         super().__init__(
