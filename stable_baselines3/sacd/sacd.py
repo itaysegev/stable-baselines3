@@ -121,7 +121,6 @@ class SACD(OffPolicyAlgorithm):
         _init_setup_model: bool = True,
         weights_vector: List[float] = [1, 1]
     ):
-        policy_kwargs.update({"n_reward_components": len(weights_vector) - 1})
         super().__init__(
             policy,
             env,
