@@ -8,10 +8,11 @@ from torch.nn import functional as F
 from stable_baselines3.common.buffers import ReplayBuffer
 from stable_baselines3.common.noise import ActionNoise
 from stable_baselines3.common.off_policy_algorithm import OffPolicyAlgorithm
-from stable_baselines3.common.policies import BasePolicy, ContinuousCritic
+from stable_baselines3.common.policies import BasePolicy, ContinuousCritic, MultiPerspectiveCritic
 from stable_baselines3.common.type_aliases import GymEnv, MaybeCallback, Schedule
 from stable_baselines3.common.utils import get_parameters_by_name, polyak_update
-from stable_baselines3.sacd.policies import Actor, CnnPolicy, MlpPolicy, MultiInputPolicy, SACPolicy
+from stable_baselines3.sacd.policies import Actor, CnnPolicy, MlpPolicy, MultiInputPolicy, SACPolicy,\
+    MultiPerspectivePolicy
 
 SelfSAC = TypeVar("SelfSACD", bound="SACD")
 
@@ -79,13 +80,15 @@ class SACD(OffPolicyAlgorithm):
 
     policy_aliases: ClassVar[Dict[str, Type[BasePolicy]]] = {
         "MlpPolicy": MlpPolicy,
+        "SACPolicy": SACPolicy,
         "CnnPolicy": CnnPolicy,
         "MultiInputPolicy": MultiInputPolicy,
+        "MultiPerspectivePolicy": MultiPerspectivePolicy,
     }
-    policy: SACPolicy
+    policy: MultiPerspectivePolicy
     actor: Actor
-    critic: ContinuousCritic
-    critic_target: ContinuousCritic
+    critic: MultiPerspectiveCritic
+    critic_target: MultiPerspectiveCritic
 
     def __init__(
         self,
@@ -214,7 +217,7 @@ class SACD(OffPolicyAlgorithm):
         for gradient_step in range(gradient_steps):
             # Sample replay buffer
             replay_data = self.replay_buffer.sample(batch_size, env=self._vec_normalize_env)  # type: ignore[union-attr]
-            print(replay_data, "replay_data")
+            print(replay_data.rewards, "replay_data")
             # We need to sample because `log_std` may have changed between two gradient steps
             if self.use_sde:
                 self.actor.reset_noise()
