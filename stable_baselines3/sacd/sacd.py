@@ -252,6 +252,7 @@ class SACD(OffPolicyAlgorithm):
                 # Select action according to policy
                 next_actions, next_log_prob = self.actor.action_log_prob(replay_data.next_observations)
                 # Compute the next Q values: min over all critics targets
+                print(self.critic_target(replay_data.next_observations, next_actions))
                 next_q_values = th.cat(self.critic_target(replay_data.next_observations, next_actions), dim=1)
                 print(next_q_values.size(), "next_q_values")
                 print(th.dot(self.weights_vector, next_q_values))
