@@ -156,7 +156,7 @@ class SACD(OffPolicyAlgorithm):
         self.ent_coef = ent_coef
         self.target_update_interval = target_update_interval
         self.ent_coef_optimizer: Optional[th.optim.Adam] = None
-        self.weights_vector = weights_vector
+        self.weights_vector = th.tensor(weights_vector).to(self.device)
 
         if _init_setup_model:
             self._setup_model()
@@ -252,11 +252,9 @@ class SACD(OffPolicyAlgorithm):
                 # Select action according to policy
                 next_actions, next_log_prob = self.actor.action_log_prob(replay_data.next_observations)
                 # Compute the next Q values: min over all critics targets
-                print(self.weights_vector, "weights_vector")
-                print(self.critic_target(replay_data.next_observations, next_actions), "critic_target")
                 next_q_values = th.cat(self.critic_target(replay_data.next_observations, next_actions), dim=1)
-                print(next_q_values, "next_q_values")
-                print(th.dot(th.tensor(weights_vector), next_q_values))
+                print(next_q_values.size(), "next_q_values")
+                print(th.dot(self.weights_vector, next_q_values))
                 next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
                 # add entropy term
                 next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
