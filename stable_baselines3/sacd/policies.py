@@ -548,6 +548,7 @@ class MultiPerspectivePolicy(SACPolicy):
         share_features_extractor: bool = False,
         n_reward_components: int = 1,
     ):
+        print("POLICY INIT")
         super().__init__(
             observation_space,
             action_space,
