@@ -202,6 +202,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
             self.lr_schedule,
             **self.policy_kwargs,  # pytype:disable=not-instantiable
         )
+
         self.policy = self.policy.to(self.device)
 
         # Convert train freq parameter to TrainFreq object

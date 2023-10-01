@@ -782,7 +782,7 @@ class BaseAlgorithm(ABC):
     def get_parameters(self) -> Dict[str, Dict]:
         """
         Return the parameters of the agent. This includes parameters from different networks, e.g.
-        policy_class (value functions) and policies (pi functions).
+        critics (value functions) and policies (pi functions).
 
         :return: Mapping of from names of the objects to PyTorch state-dicts.
         """
