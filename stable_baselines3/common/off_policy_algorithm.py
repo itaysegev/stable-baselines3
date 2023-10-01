@@ -196,7 +196,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
                 optimize_memory_usage=self.optimize_memory_usage,
                 **replay_buffer_kwargs,  # pytype:disable=wrong-keyword-args
             )
-
+        print("A")
         self.policy = self.policy_class(  # pytype:disable=not-instantiable
             self.observation_space,
             self.action_space,

@@ -117,6 +117,7 @@ class BaseModel(nn.Module):
 
     def make_features_extractor(self) -> BaseFeaturesExtractor:
         """Helper method to create a features extractor."""
+        print("make_features_extractor", self.features_extractor_class)
         return self.features_extractor_class(self.observation_space, **self.features_extractor_kwargs)
 
     def extract_features(self, obs: th.Tensor, features_extractor: BaseFeaturesExtractor) -> th.Tensor:
