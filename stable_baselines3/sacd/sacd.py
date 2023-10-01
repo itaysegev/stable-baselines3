@@ -160,6 +160,7 @@ class SACD(OffPolicyAlgorithm):
             self._setup_model()
 
     def _setup_model(self) -> None:
+        print("setup model")
         super()._setup_model()
 
         self._create_aliases()

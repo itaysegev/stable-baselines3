@@ -499,6 +499,7 @@ class MultiInputPolicy(SACPolicy):
             share_features_extractor,
         )
 
+
 class MultiPerspectivePolicy(SACPolicy):
     """
     Policy class (with both actor and critic) for SACD.
@@ -566,6 +567,11 @@ class MultiPerspectivePolicy(SACPolicy):
             share_features_extractor,
         )
         self.n_reward_components = n_reward_components
+        self.critic_kwargs.update(
+            {
+                "n_reward_components": n_reward_components
+            }
+        )
 
     def make_critic(self, features_extractor: Optional[BaseFeaturesExtractor] = None) -> MultiPerspectiveCritic:
         critic_kwargs = self._update_features_extractor(self.critic_kwargs, features_extractor)
