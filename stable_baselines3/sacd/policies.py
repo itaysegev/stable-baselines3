@@ -342,7 +342,6 @@ class SACPolicy(BasePolicy):
         return Actor(**actor_kwargs).to(self.device)
 
     def make_critic(self, features_extractor: Optional[BaseFeaturesExtractor] = None) -> ContinuousCritic:
-        print("critic1")
         critic_kwargs = self._update_features_extractor(self.critic_kwargs, features_extractor)
         return ContinuousCritic(**critic_kwargs).to(self.device)
 
@@ -575,5 +574,5 @@ class MultiPerspectivePolicy(SACPolicy):
                 "n_reward_components": self.n_reward_components,
             }
         )
-        print(critic_kwargs)
+        print(self.n_reward_components,"n_reward_components")
         return MultiPerspectiveCritic(**critic_kwargs).to(self.device)

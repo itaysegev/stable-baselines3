@@ -119,7 +119,9 @@ class SACD(OffPolicyAlgorithm):
         seed: Optional[int] = None,
         device: Union[th.device, str] = "auto",
         _init_setup_model: bool = True,
+        weights_vector: List[float] = [1, 1]
     ):
+        policy_kwargs.update({"n_reward_components": len(weights_vector) - 1})
         super().__init__(
             policy,
             env,
@@ -155,13 +157,13 @@ class SACD(OffPolicyAlgorithm):
         self.ent_coef = ent_coef
         self.target_update_interval = target_update_interval
         self.ent_coef_optimizer: Optional[th.optim.Adam] = None
+        self.weights_vector = weights_vector
 
         if _init_setup_model:
             self._setup_model()
 
     def _setup_model(self) -> None:
         super()._setup_model()
-        print("setup model")
         self._create_aliases()
         # Running mean and running var
         self.batch_norm_stats = get_parameters_by_name(self.critic, ["running_"])
@@ -201,6 +203,8 @@ class SACD(OffPolicyAlgorithm):
         self.critic_target = self.policy.critic_target
 
     def train(self, gradient_steps: int, batch_size: int = 64) -> None:
+        print(self.critic, "critic")
+
         # Switch to train mode (this affects batch norm / dropout)
         self.policy.set_training_mode(True)
         # Update optimizers learning rate

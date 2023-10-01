@@ -987,7 +987,6 @@ class MultiPerspectiveCritic(BaseModel):
         share_features_extractor: bool = True,
         n_reward_components: int = 1,
     ):
-        print("MultiPerspectiveCritics")
         super().__init__(
             observation_space,
             action_space,
@@ -1006,6 +1005,7 @@ class MultiPerspectiveCritic(BaseModel):
             q_net = nn.Sequential(*q_net)
             self.add_module(f"qf{idx}", q_net)
             self.q_networks.append(q_net)
+
 
     def forward(self, obs: th.Tensor, actions: th.Tensor) -> Tuple[th.Tensor, ...]:
         # Learn the features extractor using the policy loss only
