@@ -284,7 +284,7 @@ class SACPolicy(BasePolicy):
             lr=lr_schedule(1),  # type: ignore[call-arg]
             **self.optimizer_kwargs,
         )
-
+        print("critic")
         if self.share_features_extractor:
             self.critic = self.make_critic(features_extractor=self.actor.features_extractor)
             # Do not optimize the shared features extractor with the critic loss
@@ -343,6 +343,7 @@ class SACPolicy(BasePolicy):
         return Actor(**actor_kwargs).to(self.device)
 
     def make_critic(self, features_extractor: Optional[BaseFeaturesExtractor] = None) -> ContinuousCritic:
+        print("critic1")
         critic_kwargs = self._update_features_extractor(self.critic_kwargs, features_extractor)
         return ContinuousCritic(**critic_kwargs).to(self.device)
 
@@ -548,7 +549,6 @@ class MultiPerspectivePolicy(SACPolicy):
         share_features_extractor: bool = False,
         n_reward_components: int = 1,
     ):
-        print("POLICY INIT")
         super().__init__(
             observation_space,
             action_space,
@@ -567,6 +567,7 @@ class MultiPerspectivePolicy(SACPolicy):
             n_critics,
             share_features_extractor,
         )
+        print("POLICY INIT")
         self.n_reward_components = n_reward_components
         self.critic_kwargs.update(
             {
@@ -575,7 +576,7 @@ class MultiPerspectivePolicy(SACPolicy):
         )
 
     def make_critic(self, features_extractor: Optional[BaseFeaturesExtractor] = None) -> MultiPerspectiveCritic:
-        critic_kwargs = self._update_features_extractor(self.critic_kwargs, features_extractor)
         print("DEBUG")
+        critic_kwargs = self._update_features_extractor(self.critic_kwargs, features_extractor)
         print(critic_kwargs, self.n_reward_components)
         return MultiPerspectiveCritic(**critic_kwargs).to(self.device)
