@@ -548,6 +548,7 @@ class MultiPerspectivePolicy(SACPolicy):
         share_features_extractor: bool = False,
         n_reward_components: int = 1,
     ):
+        self.n_reward_components = n_reward_components
         super().__init__(
             observation_space,
             action_space,
@@ -566,14 +567,13 @@ class MultiPerspectivePolicy(SACPolicy):
             n_critics,
             share_features_extractor,
         )
-        self.n_reward_components = n_reward_components
-        self.critic_kwargs.update(
-            {
-                "n_reward_components": n_reward_components
-            }
-        )
 
     def make_critic(self, features_extractor: Optional[BaseFeaturesExtractor] = None) -> MultiPerspectiveCritic:
         critic_kwargs = self._update_features_extractor(self.critic_kwargs, features_extractor)
+        self.critic_kwargs.update(
+            {
+                "n_reward_components": n_reward_components,
+            }
+        )
         print(critic_kwargs)
         return MultiPerspectiveCritic(**critic_kwargs).to(self.device)
