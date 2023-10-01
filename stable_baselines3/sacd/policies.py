@@ -572,7 +572,7 @@ class MultiPerspectivePolicy(SACPolicy):
         critic_kwargs = self._update_features_extractor(self.critic_kwargs, features_extractor)
         self.critic_kwargs.update(
             {
-                "n_reward_components": n_reward_components,
+                "n_reward_components": self.n_reward_components,
             }
         )
         print(critic_kwargs)
