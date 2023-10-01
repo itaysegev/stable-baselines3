@@ -574,7 +574,6 @@ class MultiPerspectivePolicy(SACPolicy):
         )
 
     def make_critic(self, features_extractor: Optional[BaseFeaturesExtractor] = None) -> MultiPerspectiveCritic:
-        print("Criticssss")
         critic_kwargs = self._update_features_extractor(self.critic_kwargs, features_extractor)
-        print(critic_kwargs, self.n_reward_components)
+        print(critic_kwargs)
         return MultiPerspectiveCritic(**critic_kwargs).to(self.device)
