@@ -987,7 +987,6 @@ class MultiPerspectiveCritic(BaseModel):
         share_features_extractor: bool = True,
         n_reward_components: int = 1,
     ):
-        print("n_reward_components", n_reward_components)
         super().__init__(
             observation_space,
             action_space,

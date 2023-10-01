@@ -202,8 +202,6 @@ class SACD(OffPolicyAlgorithm):
         self.critic_target = self.policy.critic_target
 
     def train(self, gradient_steps: int, batch_size: int = 64) -> None:
-        print(self.critic, "critic")
-
         # Switch to train mode (this affects batch norm / dropout)
         self.policy.set_training_mode(True)
         # Update optimizers learning rate
@@ -252,7 +250,7 @@ class SACD(OffPolicyAlgorithm):
                 # Select action according to policy
                 next_actions, next_log_prob = self.actor.action_log_prob(replay_data.next_observations)
                 # Compute the next Q values: min over all critics targets
-                print(self.critic_target(replay_data.next_observations, next_actions))
+                print(self.critic_target(replay_data.next_observations, next_actions)[0].size(), "critic_target")
                 next_q_values = th.cat(self.critic_target(replay_data.next_observations, next_actions), dim=1)
                 print(next_q_values.size(), "next_q_values")
                 print(th.dot(self.weights_vector, next_q_values))
