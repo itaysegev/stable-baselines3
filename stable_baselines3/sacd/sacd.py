@@ -252,10 +252,10 @@ class SACD(OffPolicyAlgorithm):
                 # Select action according to policy
                 next_actions, next_log_prob = self.actor.action_log_prob(replay_data.next_observations)
                 # Compute the next Q values: min over all critics targets
-                print(self.critic_target(replay_data.next_observations, next_actions), "critic_target")
+                print(self.critic_target(replay_data.next_observations, next_actions).shape, "critic_target")
                 next_q_values = th.cat(self.critic_target(replay_data.next_observations, next_actions), dim=1)
-                print(next_q_values, "next_q_values")
-                print(torch.dot(th.tensor(weights_vector), next_q_values))
+                print(next_q_values.shape, "next_q_values")
+                print(th.dot(th.tensor(weights_vector), next_q_values))
                 next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
                 # add entropy term
                 next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
