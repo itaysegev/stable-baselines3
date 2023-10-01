@@ -540,7 +540,7 @@ class MultiPerspectivePolicy(SACPolicy):
         log_std_init: float = -3,
         use_expln: bool = False,
         clip_mean: float = 2.0,
-        features_extractor_class: Type[BaseFeaturesExtractor] = CombinedExtractor,
+        features_extractor_class: Type[BaseFeaturesExtractor] = FlattenExtractor,
         features_extractor_kwargs: Optional[Dict[str, Any]] = None,
         normalize_images: bool = True,
         optimizer_class: Type[th.optim.Optimizer] = th.optim.Adam,
@@ -567,7 +567,6 @@ class MultiPerspectivePolicy(SACPolicy):
             n_critics,
             share_features_extractor,
         )
-        print("POLICY INIT")
         self.n_reward_components = n_reward_components
         self.critic_kwargs.update(
             {
