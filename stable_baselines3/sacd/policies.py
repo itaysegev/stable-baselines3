@@ -297,6 +297,7 @@ class SACPolicy(BasePolicy):
 
         # Critic target should not share the features extractor with critic
         self.critic_target = self.make_critic(features_extractor=None)
+        print(self.critic_target,"Debug")
         self.critic_target.load_state_dict(self.critic.state_dict())
 
         self.critic.optimizer = self.optimizer_class(
@@ -574,4 +575,5 @@ class MultiPerspectivePolicy(SACPolicy):
                 "n_reward_components": self.n_reward_components,
             }
         )
+        print(self.critic_kwargs)
         return MultiPerspectiveCritic(**critic_kwargs).to(self.device)
