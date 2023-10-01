@@ -576,5 +576,5 @@ class MultiPerspectivePolicy(SACPolicy):
                 "n_reward_components": self.n_reward_components,
             }
         )
-        print(self.critic_kwargs)
+        print(self.critic_kwargs, "critic_kwargs")
         return MultiPerspectiveCritic(**critic_kwargs).to(self.device)

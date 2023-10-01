@@ -1000,6 +1000,7 @@ class MultiPerspectiveCritic(BaseModel):
         self.n_critics = n_critics
         self.q_networks = []
         self.m = n_reward_components
+        print("n_reward_components", n_reward_components)
         for idx in range(n_critics):
             q_net = create_mlp(features_dim + action_dim, n_reward_components, net_arch, activation_fn)
             q_net = nn.Sequential(*q_net)
