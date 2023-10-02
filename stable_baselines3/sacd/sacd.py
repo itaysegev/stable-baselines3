@@ -276,20 +276,10 @@ class SACD(OffPolicyAlgorithm):
                     # td error + entropy term
                     target_q_values = replay_data.rewards + (1 - replay_data.dones) * self.gamma * next_q_values
 
-                # Get current Q-values estimates for each critic network
-                # using action from the replay buffer
-                current_q_values = self.critic(replay_data.observations, replay_data.actions)
-
-                # add entropy term
-                next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
-                # td error + entropy term
-                target_q_values = replay_data.rewards + (1 - replay_data.dones) * self.gamma * next_q_values
-
             # Get current Q-values estimates for each critic network
             # using action from the replay buffer
             current_q_values = self.critic(replay_data.observations, replay_data.actions)
-            print(current_q_values,"current_q_values")
-            print(target_q_values,"target_q_values")
+
 
 
             # Compute critic loss
@@ -305,6 +295,11 @@ class SACD(OffPolicyAlgorithm):
             # Compute actor loss
             # Alternative: actor_loss = th.mean(log_prob - qf1_pi)
             # Min over all critic networks
+            print(self.critic(replay_data.observations, actions_pi),"A")
+            composite_q_values = tuple(th.tensor(np.dot(t.numpy(), self.weights_vector.T)).view(-1, 1)
+                                       for t in self.critic(replay_data.observations, actions_pi))
+            print(composite_q_values,"c")
+
             q_values_pi = th.cat(self.critic(replay_data.observations, actions_pi), dim=1)
             min_qf_pi, _ = th.min(q_values_pi, dim=1, keepdim=True)
             actor_loss = (ent_coef * log_prob - min_qf_pi).mean()
