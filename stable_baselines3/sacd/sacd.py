@@ -249,13 +249,13 @@ class SACD(OffPolicyAlgorithm):
             with th.no_grad():
                 # Select action according to policy
                 next_actions, next_log_prob = self.actor.action_log_prob(replay_data.next_observations)
-                # Compute the next Q values: min over all critics targets
+
+                # Compute the next Q values: composite and min over all critics targets
                 composite_q_values = tuple(t * self.weights_vector for t in
                                            self.critic_target(replay_data.next_observations, next_actions))
-                print(composite_q_values[1].shape,"size")
                 next_q_values = th.cat(composite_q_values, dim=1)
-
                 next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
+
                 # add entropy term
                 next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
                 # td error + entropy term
@@ -264,6 +264,10 @@ class SACD(OffPolicyAlgorithm):
             # Get current Q-values estimates for each critic network
             # using action from the replay buffer
             current_q_values = self.critic(replay_data.observations, replay_data.actions)
+
+            print(current_q_values.size(),"current_q_values")
+            print(replay_data.rewards.size(),"rewards")
+            print(target_q_values.size(),"target_q_values")
 
             # Compute critic loss
             critic_loss = 0.5 * sum(F.mse_loss(current_q, target_q_values) for current_q in current_q_values)
