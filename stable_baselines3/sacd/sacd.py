@@ -259,8 +259,9 @@ class SACD(OffPolicyAlgorithm):
                 min_composite_q_values, indices_q_values = th.min(composite_q_values, dim=1, keepdim=True)
 
                 print(self.critic_target(replay_data.next_observations, next_actions)[0],"AA")
-                print(indices_q_values.size(),"indices_q_values")
-                print(self.critic_target(replay_data.next_observations, next_actions)[0][:,indices_q_values],"BB")
+                print(indices_q_values.squeeze(),"indices_q_values")
+                print(self.critic_target(replay_data.next_observations, next_actions)[0][torch.arange(256),
+                                                                                         indices_q_values.squeeze()],"BB")
 
                 next_q_values = tuple(t[indices_q_values] for t in
                                       self.critic_target(replay_data.next_observations, next_actions))
