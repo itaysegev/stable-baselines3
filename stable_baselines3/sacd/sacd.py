@@ -269,7 +269,7 @@ class SACD(OffPolicyAlgorithm):
                         tensor_elements.append(self.critic_target(replay_data.next_observations, next_actions)
                                                [indices_q_values_lst[i]][i])
 
-                    print(th.stack(tensor_elements),"c")
+                    next_q_values = th.stack(tensor_elements)
 
                     # add entropy term
                     next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
@@ -288,9 +288,9 @@ class SACD(OffPolicyAlgorithm):
             # Get current Q-values estimates for each critic network
             # using action from the replay buffer
             current_q_values = self.critic(replay_data.observations, replay_data.actions)
-            # print(current_q_values,"current_q_values")
-            # print(target_q_values,"target_q_values")
-            # print(indices_q_values,"indices_q_values")
+            print(current_q_values,"current_q_values")
+            print(target_q_values,"target_q_values")
+
 
             # Compute critic loss
             critic_loss = 0.5 * sum(F.mse_loss(current_q, target_q_values) for current_q in current_q_values)
