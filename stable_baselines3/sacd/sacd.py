@@ -156,7 +156,7 @@ class SACD(OffPolicyAlgorithm):
         self.ent_coef = ent_coef
         self.target_update_interval = target_update_interval
         self.ent_coef_optimizer: Optional[th.optim.Adam] = None
-        self.weights_vector = th.tensor(weights_vector).to(self.device)
+        self.weights_vector = np.array(weights_vector)
 
         if _init_setup_model:
             self._setup_model()
@@ -251,7 +251,8 @@ class SACD(OffPolicyAlgorithm):
                 next_actions, next_log_prob = self.actor.action_log_prob(replay_data.next_observations)
 
                 # Compute the next Q values: composite and min over all critics targets
-                composite_q_values = tuple(th.matmul(t,self.weights_vector.T) for t in
+                print(self.weights_vector.T, "weights_vector")
+                composite_q_values = tuple(np.dot(t.numpy(),self.weights_vector.T) for t in
                                            self.critic_target(replay_data.next_observations, next_actions))
                 print(composite_q_values[0], "composite_q_values")
                 composite_q_values = th.cat(composite_q_values, dim=1)
