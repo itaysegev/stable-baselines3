@@ -265,7 +265,7 @@ class SACD(OffPolicyAlgorithm):
             # using action from the replay buffer
             current_q_values = self.critic(replay_data.observations, replay_data.actions)
 
-            print(current_q_values.size(),"current_q_values")
+            print(current_q_values[0].size(),"current_q_values")
             print(replay_data.rewards.size(),"rewards")
             print(target_q_values.size(),"target_q_values")
 

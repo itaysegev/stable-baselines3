@@ -297,8 +297,6 @@ class SACPolicy(BasePolicy):
 
         # Critic target should not share the features extractor with critic
         self.critic_target = self.make_critic(features_extractor=None)
-        print(self.critic, "DEBUG")
-        print(self.critic_target,"Debug")
         self.critic_target.load_state_dict(self.critic.state_dict())
 
         self.critic.optimizer = self.optimizer_class(
