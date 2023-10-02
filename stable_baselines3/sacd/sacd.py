@@ -262,7 +262,6 @@ class SACD(OffPolicyAlgorithm):
 
 
                     indices_q_values_lst = indices_q_values.squeeze().tolist()
-                    print(self.critic_target(replay_data.next_observations, next_actions),"n")
 
                     tensor_elements = []
                     for i in range(len(self.critic_target(replay_data.next_observations, next_actions)[0])):
@@ -297,9 +296,9 @@ class SACD(OffPolicyAlgorithm):
             # Min over all critic networks
             print(self.critic(replay_data.observations, actions_pi),"A")
             # Convert self.weights_vector to a row vector
-            print(th.tensor(self.weights_vector).view(-1, 1),"b")
+            print(th.tensor(self.weights_vector),"b")
             # Perform the dot product and reshape each result to (256, 1)
-            composite_q_values = tuple(th.mul(t, th.tensor(self.weights_vector)).view(-1, 1) for t in
+            composite_q_values = tuple(th.mul(t, th.tensor(self.weights_vector)) for t in
                        self.critic(replay_data.observations, actions_pi))
 
             print(composite_q_values,"c")
