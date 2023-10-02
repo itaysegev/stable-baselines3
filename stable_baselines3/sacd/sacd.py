@@ -261,9 +261,11 @@ class SACD(OffPolicyAlgorithm):
                     # next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
 
                     print(composite_q_values,"d")
-                    print(indices_q_values.squeeze(),"s")
+                    print(indices_q_values.squeeze().tolist(),"s")
+                    indices_q_values_lst = indices_q_values.squeeze().tolist()
                     print(self.critic_target(replay_data.next_observations, next_actions),"n")
-
+                    next_q_values = [self.critic_target(replay_data.next_observations, next_actions)[i] for i in
+                                     indices_q_values_lst]
 
                     # add entropy term
                     next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
