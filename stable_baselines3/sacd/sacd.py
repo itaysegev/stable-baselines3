@@ -267,10 +267,8 @@ class SACD(OffPolicyAlgorithm):
             # using action from the replay buffer
             current_q_values = self.critic(replay_data.observations, replay_data.actions)
             print(current_q_values,"current_q_values")
-            print(current_q_values[indices_q_values],"current_q_values[indices_q_values]")
             print(target_q_values,"target_q_values")
-
-
+            print(indices_q_values,"indices_q_values")
 
             # Compute critic loss
             critic_loss = 0.5 * sum(F.mse_loss(current_q, target_q_values) for current_q in current_q_values)
