@@ -246,27 +246,33 @@ class SACD(OffPolicyAlgorithm):
                 ent_coef_loss.backward()
                 self.ent_coef_optimizer.step()
 
-            with th.no_grad():
-                # Select action according to policy
-                next_actions, next_log_prob = self.actor.action_log_prob(replay_data.next_observations)
+                with th.no_grad():
+                    # Select action according to policy
+                    next_actions, next_log_prob = self.actor.action_log_prob(replay_data.next_observations)
 
-                # Compute the next Q values: composite and min over all critics targets
+                    composite_q_values = tuple(th.tensor(np.dot(t.numpy(), self.weights_vector.T)).view(-1, 1)
+                                               for t in self.critic_target(replay_data.next_observations, next_actions))
 
-                composite_q_values = tuple(th.tensor(np.dot(t.numpy(),self.weights_vector.T)).view(-1, 1)
-                                           for t in self.critic_target(replay_data.next_observations, next_actions))
+                    # Compute the next Q values: min over all critics targets
+                    next_q_values = th.cat(self.critic_target(replay_data.next_observations, next_actions), dim=1)
+                    composite_q_values = th.cat(composite_q_values, dim=1)
 
-                composite_q_values = th.cat(composite_q_values, dim=1)
-                min_composite_q_values, indices_q_values = th.min(composite_q_values, dim=1, keepdim=True)
+                    min_composite_q_values, indices_q_values = th.min(composite_q_values, dim=1, keepdim=True)
+                    # next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
 
-                print(self.critic_target(replay_data.next_observations, next_actions)[0],"AA")
-                print(indices_q_values.squeeze(),"indices_q_values")
-                print(self.critic_target(replay_data.next_observations, next_actions)[0][torch.arange(256),
-                                                                                         indices_q_values.squeeze()],"BB")
-
-                next_q_values = tuple(t[indices_q_values] for t in
-                                      self.critic_target(replay_data.next_observations, next_actions))
+                    print(composite_q_values,"d")
+                    print(indices_q_values.squeeze(),"s")
+                    print(next_q_values,"n")
 
 
+                    # add entropy term
+                    next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
+                    # td error + entropy term
+                    target_q_values = replay_data.rewards + (1 - replay_data.dones) * self.gamma * next_q_values
+
+                # Get current Q-values estimates for each critic network
+                # using action from the replay buffer
+                current_q_values = self.critic(replay_data.observations, replay_data.actions)
 
                 # add entropy term
                 next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
