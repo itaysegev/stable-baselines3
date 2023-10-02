@@ -298,7 +298,7 @@ class SACD(OffPolicyAlgorithm):
             print(self.critic(replay_data.observations, actions_pi),"A")
             # Convert self.weights_vector to a row vector
             weights_vector = self.weights_vector.view(1, -1)
-
+            print(weights_vector.T.shape,"b")
             # Perform the dot product and reshape each result to (256, 1)
             composite_q_values = tuple(th.mm(t, weights_vector.T).view(-1, 1) for t in
                        self.critic(replay_data.observations, actions_pi))
