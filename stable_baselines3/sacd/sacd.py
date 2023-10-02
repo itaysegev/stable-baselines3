@@ -255,7 +255,9 @@ class SACD(OffPolicyAlgorithm):
                                            self.critic_target(replay_data.next_observations, next_actions))
                 composite_q_values = th.cat(composite_q_values, dim=1)
                 print(replay_data.rewards.size(), "rewards")
-                print(th.argmin(composite_q_values, dim=1, keepdim=True),"argmin")
+                print(composite_q_values[0],"composite_q_values")
+                print(th.argmin(composite_q_values[0], dim=1, keepdim=True),"argmin")
+                print(th.argmin(composite_q_values[0], dim=1, keepdim=False), "argmin")
                 next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
 
                 # add entropy term
