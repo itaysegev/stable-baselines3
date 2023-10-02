@@ -263,8 +263,7 @@ class SACD(OffPolicyAlgorithm):
 
                     indices_q_values_lst = indices_q_values.squeeze().tolist()
                     print(self.critic_target(replay_data.next_observations, next_actions),"n")
-                    print(indices_q_values_lst[0],"i")
-                    print(self.critic_target(replay_data.next_observations, next_actions)[indices_q_values_lst[0]],"c")
+                    print(self.critic_target(replay_data.next_observations, next_actions)[indices_q_values_lst[0]][0],"c")
                     # tensor_elements = []
                     # for i in range(len(self.critic_target(replay_data.next_observations, next_actions)[0])):
                     #     tensor_elements.append(self.critic_target(replay_data.next_observations, next_actions)
