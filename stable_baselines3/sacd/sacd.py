@@ -217,6 +217,8 @@ class SACD(OffPolicyAlgorithm):
 
         for gradient_step in range(gradient_steps):
             # Sample replay buffer
+            print(self._vec_normalize_env.reward_function)
+            print(self.env.reward_function)
             replay_data = self.replay_buffer.sample(batch_size, env=self._vec_normalize_env)  # type: ignore[union-attr]
             # We need to sample because `log_std` may have changed between two gradient steps
             if self.use_sde:
