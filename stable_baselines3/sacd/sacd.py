@@ -257,9 +257,9 @@ class SACD(OffPolicyAlgorithm):
 
                 composite_q_values = th.cat(composite_q_values, dim=1)
 
-                print(replay_data.rewards[0], "rewards")
-                print(composite_q_values[0], "composite_q_values")
-                print(th.min(composite_q_values[0], dim=1, keepdim=True),"min")
+                print(replay_data.rewards, "rewards")
+                print(composite_q_values[0],"composite_q_values")
+                print(th.min(composite_q_values, dim=1, keepdim=True),"min")
 
                 next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
 
