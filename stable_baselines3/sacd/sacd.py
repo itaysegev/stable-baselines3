@@ -260,18 +260,18 @@ class SACD(OffPolicyAlgorithm):
                     min_composite_q_values, indices_q_values = th.min(composite_q_values, dim=1, keepdim=True)
                     # next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
 
-                    print(composite_q_values,"d")
-                    print(indices_q_values.squeeze().tolist(),"s")
+
                     indices_q_values_lst = indices_q_values.squeeze().tolist()
                     print(self.critic_target(replay_data.next_observations, next_actions),"n")
-
-                    tensor_elements = []
-                    for i in range(len(self.critic_target(replay_data.next_observations, next_actions)[0])):
-                        tensor_elements.append(self.critic_target(replay_data.next_observations, next_actions)
-                                               [indices_q_values_lst[i]])
-
-                    print(tensor_elements,"t")
-                    print(th.cat(tensor_elements, dim=1),"c")
+                    print(indices_q_values_lst[0],"i")
+                    print(self.critic_target(replay_data.next_observations, next_actions)[indices_q_values_lst[0]],"c")
+                    # tensor_elements = []
+                    # for i in range(len(self.critic_target(replay_data.next_observations, next_actions)[0])):
+                    #     tensor_elements.append(self.critic_target(replay_data.next_observations, next_actions)
+                    #                            [indices_q_values_lst[i]])
+                    #
+                    # print(tensor_elements,"t")
+                    # print(th.cat(tensor_elements, dim=1),"c")
 
                     # add entropy term
                     next_q_values = next_q_values - ent_coef * next_log_prob.reshape(-1, 1)
