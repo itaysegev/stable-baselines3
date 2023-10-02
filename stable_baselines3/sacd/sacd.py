@@ -253,7 +253,9 @@ class SACD(OffPolicyAlgorithm):
                 # Compute the next Q values: composite and min over all critics targets
                 composite_q_values = tuple(t * self.weights_vector for t in
                                            self.critic_target(replay_data.next_observations, next_actions))
-                next_q_values = th.cat(composite_q_values, dim=1)
+                composite_q_values = th.cat(composite_q_values, dim=1)
+                print(replay_data.rewards.size(), "rewards")
+                print(th.argmin(composite_q_values, dim=1, keepdim=True),"argmin")
                 next_q_values, _ = th.min(next_q_values, dim=1, keepdim=True)
 
                 # add entropy term
@@ -266,7 +268,7 @@ class SACD(OffPolicyAlgorithm):
             current_q_values = self.critic(replay_data.observations, replay_data.actions)
 
             print(current_q_values[0].size(),"current_q_values")
-            print(replay_data.rewards.size(),"rewards")
+
             print(target_q_values.size(),"target_q_values")
 
             # Compute critic loss
