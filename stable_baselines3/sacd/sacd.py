@@ -252,7 +252,7 @@ class SACD(OffPolicyAlgorithm):
 
                 # Compute the next Q values: composite and min over all critics targets
                 print(self.critic_target(replay_data.next_observations, next_actions)[0], "critic_target")
-                print(self.weights_vector, "weights_vector")
+                print(self.weights_vector.T, "weights_vector")
                 composite_q_values = tuple(th.dot(t,self.weights_vector.T) for t in
                                            self.critic_target(replay_data.next_observations, next_actions))
                 print(composite_q_values[0], "composite_q_values")
