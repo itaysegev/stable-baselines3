@@ -294,17 +294,17 @@ class SACD(OffPolicyAlgorithm):
             # Compute actor loss
             # Alternative: actor_loss = th.mean(log_prob - qf1_pi)
             # Min over all critic networks
-            print(self.critic(replay_data.observations, actions_pi),"A")
-            # Convert self.weights_vector to a row vector
-            print(th.tensor(self.weights_vector).view(-1, 1),"b")
+
             # Perform the dot product and reshape each result to (256, 1)
             composite_q_values = tuple(th.mm(t, th.tensor(self.weights_vector, dtype=th.float).view(-1, 1)) for t in
                        self.critic(replay_data.observations, actions_pi))
 
-            print(composite_q_values,"c")
 
             q_values_pi = th.cat(self.critic(replay_data.observations, actions_pi), dim=1)
-            min_qf_pi, _ = th.min(q_values_pi, dim=1, keepdim=True)
+            print(q_values_pi.size(),"q_values_pi")
+            print(composite_q_values.size(),"composite_q_values")
+            min_qf_pi, _ = th.min(composite_q_values, dim=1, keepdim=True)
+            print(min_qf_pi,"min_qf_pi")
             actor_loss = (ent_coef * log_prob - min_qf_pi).mean()
             actor_losses.append(actor_loss.item())
 
