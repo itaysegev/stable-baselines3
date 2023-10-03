@@ -259,20 +259,10 @@ class SACD(OffPolicyAlgorithm):
 
                     min_composite_q_values, indices_q_values = th.min(composite_q_values, dim=1, keepdim=True)
 
-                    indices_q_values_lst = indices_q_values.squeeze().tolist()
+                    index_tensor = indices_q_values.squeeze()
 
-                    tensor_elements = []
-                    for i in range(len(self.critic_target(replay_data.next_observations, next_actions)[0])):
-                        tensor_elements.append(self.critic_target(replay_data.next_observations, next_actions)
-                                               [indices_q_values_lst[i]][i])
-
-                    next_q_values = th.stack(tensor_elements)
-
-                    index_tensor = th.tensor(indices_q_values_lst)
                     stacked_tensor = th.stack(self.critic_target(replay_data.next_observations, next_actions))
-                    print(next_q_values,"A")
-                    print(stacked_tensor[index_tensor, th.arange(len(index_tensor))] ,"B")
-                    raise ValueError("A")
+                    next_q_values = stacked_tensor[index_tensor, th.arange(len(index_tensor))]
 
 
                     # add entropy term
