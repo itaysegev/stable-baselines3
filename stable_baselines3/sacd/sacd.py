@@ -279,7 +279,7 @@ class SACD(OffPolicyAlgorithm):
             # Compute critic loss
             critic_loss = 0.5 * sum(F.mse_loss(current_q, target_q_values) for current_q in current_q_values)\
                           / len(self.weights_vector)
-            print(critic_loss,"critic_loss")
+
             assert isinstance(critic_loss, th.Tensor)  # for type checker
             critic_losses.append(critic_loss.item())  # type: ignore[union-attr]
 
